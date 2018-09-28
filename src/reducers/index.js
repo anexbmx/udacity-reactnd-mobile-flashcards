@@ -20,8 +20,6 @@ const decks = (state = initialState, action) => {
       };
     }
     case ActionTypes.CREATE_CARD: {
-      console.log("State", state);
-      console.log("Action", action);
       return {
         ...state,
         [action.deckId]: {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-window.pluralize = require("pluralize");
+import pluralize from "pluralize";
 import { connect } from "react-redux";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import StyledButton from "./StyledButton";
 import { green, gray, white } from "../utils/colors";
 
@@ -10,9 +10,7 @@ class DeckDetail extends Component {
     title: navigation.getParam("name")
   });
 
-  startQuiz = () => {
-
-  };
+  startQuiz = () => {};
 
   render() {
     const { navigation, deck } = this.props;
@@ -29,7 +27,7 @@ class DeckDetail extends Component {
           {deck.cards.length !== 0 && (
             <StyledButton
               onPress={() => {
-                alert("Starting Quiz");
+                navigation.navigate("Quiz", { deck });
               }}
             >
               <Text>Start Quiz</Text>

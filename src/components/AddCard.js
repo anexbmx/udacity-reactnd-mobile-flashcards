@@ -5,12 +5,12 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet
 } from "react-native";
 import StyledButton from "./StyledButton";
-import { white, green, gray } from "../utils/colors";
+import { white, gray } from "../utils/colors";
 import { createCard } from "../actions";
+import { saveCard } from "../utils/api";
 
 class AddCard extends Component {
   static navigationOptions = () => ({
@@ -27,6 +27,7 @@ class AddCard extends Component {
     const { question, answer } = this.state;
 
     this.props.createCard(deckId, question, answer);
+    saveCard(deckId, { question, answer });
 
     // Return to Deck Detail view.
     this.props.navigation.goBack();

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import StyledButton from "./StyledButton";
 import { createDeck } from "../actions";
+import { saveDeck } from "../utils/api";
 import { generateId } from "../utils/helpers";
 import { white, gray } from "../utils/colors";
 
@@ -16,6 +17,12 @@ class AddDeck extends Component {
     input: ""
   };
 
+  _createDeckObject = () => ({
+    id: generateId(),
+    name: this.state.input,
+    cards: []
+  })
+
   handleInputChange = input => {
     this.setState(() => ({
       input
@@ -23,17 +30,14 @@ class AddDeck extends Component {
   };
 
   handleSubmit = () => {
-    deckId = generateId();
-    deckName = this.state.input;
-
-    this.props.createDeck(deckId, deckName);
-
-    // TODO: Submit Deck to AsyncStorage
+    deck = this._createDeckObject();
+    this.props.createDeck(deck.id, deck.name); // Add to redux
+    saveDeck(deck); // Persist to AsyncStorage
 
     // Route to new deck's detail view.
     this.props.navigation.navigate("DeckDetail", {
-      deckId: deckId,
-      name: deckName
+      deckId: deck.id,
+      name: deck.name
     });
 
     // Reset input for future use.

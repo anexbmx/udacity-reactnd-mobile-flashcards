@@ -15,6 +15,7 @@ import Decks from "./src/components/Decks";
 import AddDeck from "./src/components/AddDeck";
 import AddCard from "./src/components/AddCard";
 import DeckDetail from "./src/components/DeckDetail";
+import Quiz from "./src/components/Quiz";
 
 const FlashcardsStatusBar = ({ backgroundColor, ...props }) => (
   <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
@@ -73,7 +74,8 @@ const MainNavigator = createStackNavigator(
   {
     Home: Tabs,
     DeckDetail: DeckDetail,
-    AddCard: AddCard
+    AddCard: AddCard,
+    Quiz: Quiz  
   },
   {
     initialRouteName: "Home",

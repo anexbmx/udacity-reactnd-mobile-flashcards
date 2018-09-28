@@ -1,15 +1,20 @@
 import React from "react";
-window.pluralize = require("pluralize");
+import pluralize from "pluralize";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { white, gray } from "../utils/colors";
 
 const DeckSummaryCard = ({ id, name, cardCount, navigation }) => (
   <TouchableOpacity
     style={styles.container}
-    onPress={() => navigation.navigate("DeckDetail", { deckId: id, name: name })}
+    onPress={() =>
+      navigation.navigate("DeckDetail", { deckId: id, name: name })
+    }
   >
     <Text style={styles.name}>{name}</Text>
-    <Text style={styles.count}>{`${cardCount} ${pluralize("Card", cardCount)}`}</Text>
+    <Text style={styles.count}>{`${cardCount} ${pluralize(
+      "Card",
+      cardCount
+    )}`}</Text>
   </TouchableOpacity>
 );
 
