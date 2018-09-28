@@ -1,77 +1,40 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import DeckSummaryCard from "./DeckSummaryCard";
+import StyledButton from "./StyledButton";
+import { green, white } from "../utils/colors";
 
 class Decks extends Component {
-  // Temporary state for static component creation.
-  state = {
-    decks: {
-      "Deck One": {
-        name: "Deck One",
-        cards: [
-          { question: "Question One", answer: "Answer One" },
-          { question: "Question Two", answer: "Answer Two" },
-          { question: "Question Three", answer: "Answer Three" }
-        ]
-      },
-      "Deck Two": {
-        name: "Deck Two",
-        cards: [
-          { question: "Question One", answer: "Answer One" },
-          { question: "Question Two", answer: "Answer Two" },
-          { question: "Question Three", answer: "Answer Three" }
-        ]
-      },
-      "Deck Three": {
-        name: "Deck Three",
-        cards: [
-          { question: "Question One", answer: "Answer One" },
-          { question: "Question Two", answer: "Answer Two" },
-          { question: "Question Three", answer: "Answer Three" }
-        ]
-      },
-      "Deck Four": {
-        name: "Deck Four",
-        cards: [
-          { question: "Question One", answer: "Answer One" },
-          { question: "Question Two", answer: "Answer Two" },
-          { question: "Question Three", answer: "Answer Three" }
-        ]
-      },
-      "Deck Five": {
-        name: "Deck Five",
-        cards: [
-          { question: "Question One", answer: "Answer One" },
-          { question: "Question Two", answer: "Answer Two" },
-          { question: "Question Three", answer: "Answer Three" }
-        ]
-      },
-      "Deck Six": {
-        name: "Deck Six",
-        cards: [
-          { question: "Question One", answer: "Answer One" },
-          { question: "Question Two", answer: "Answer Two" },
-          { question: "Question Three", answer: "Answer Three" }
-        ]
-      }
-    }
-  };
-
   render() {
-    const { decks } = this.state;
+    const { decks, navigation } = this.props;
 
     return decks ? (
       <View style={styles.container}>
         <FlatList
           data={Object.values(decks)}
           renderItem={({ item }) => (
-            <DeckSummaryCard name={item.name} cardCount={item.cards.length} />
+            <DeckSummaryCard
+              id={item.id}
+              name={item.name}
+              cardCount={item.cards.length}
+              navigation={this.props.navigation}
+            />
           )}
           keyExtractor={(item, index) => item.name}
         />
       </View>
     ) : (
-      <Text>No Decks</Text>
+      <View style={styles.blank}>
+        <Text style={{ fontSize: 18 }}>You don't have any decks yet.</Text>
+        <StyledButton
+          onPress={() => {
+            navigation.navigate("AddDeck");
+          }}
+        >
+          Create Deck
+        </StyledButton>
+      </View>
     );
   }
 }
@@ -81,7 +44,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     justifyContent: "flex-start"
+  },
+  blank: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
-export default Decks;
+const mapStateToProps = decks => ({
+  decks
+});
+
+export default connect(mapStateToProps)(Decks);

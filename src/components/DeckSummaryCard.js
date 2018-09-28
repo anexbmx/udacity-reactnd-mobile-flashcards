@@ -1,11 +1,15 @@
 import React from "react";
+window.pluralize = require("pluralize");
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
-import { gray } from "../utils/colors";
+import { white, gray } from "../utils/colors";
 
-const DeckSummaryCard = ({ name, cardCount }) => (
-  <TouchableOpacity style={styles.container} onPress={() => alert("Hello")}>
+const DeckSummaryCard = ({ id, name, cardCount, navigation }) => (
+  <TouchableOpacity
+    style={styles.container}
+    onPress={() => navigation.navigate("DeckDetail", { deckId: id, name: name })}
+  >
     <Text style={styles.name}>{name}</Text>
-    <Text style={styles.count}>{cardCount} Cards</Text>
+    <Text style={styles.count}>{`${cardCount} ${pluralize("Card", cardCount)}`}</Text>
   </TouchableOpacity>
 );
 
@@ -13,6 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: white,
     minHeight: 150,
     marginBottom: 10,
     padding: 20,
