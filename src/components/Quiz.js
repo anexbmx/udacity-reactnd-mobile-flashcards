@@ -5,22 +5,27 @@ import { white, gray } from "../utils/colors";
 
 import QuizCard from "./QuizCard";
 import QuizActions from "./QuizActions";
+import QuizResults from "./QuizResults";
+
+const defaultState = {
+  correctAnswerCount: 0,
+  incorrectAnswerCount: 0,
+  currentQuestionIndex: 0, // tracks which card is currently being shown
+  showResults: false
+};
 
 class Quiz extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: `${navigation.getParam("deck").name} Quiz`
   });
 
-  state = {
-    correctAnswers: 0,
-    incorrectAnswers: 0,
-    currentQuestionIndex: 0 // tracks which card is currently being shown
-  };
+  state = defaultState;
 
   _getRemainingCountMessage = () => {
-    const { correctAnswers, incorrectAnswers } = this.state;
+    const { correctAnswerCount, incorrectAnswerCount } = this.state;
     const remainingQuestions =
-      this._getDeck().cards.length - (correctAnswers + incorrectAnswers + 1);
+      this._getDeck().cards.length -
+      (correctAnswerCount + incorrectAnswerCount + 1);
     return `${remainingQuestions} ${pluralize(
       "question",
       remainingQuestions
@@ -31,19 +36,71 @@ class Quiz extends Component {
     return this.props.navigation.getParam("deck");
   };
 
-  render() {
-    const {
-      correctAnswers,
-      incorrectAnswers,
+  restartQuiz = () => {
+    this.setState(defaultState);
+  };
+
+  /* 
+   * Plays a vital role in managing quix state, will update 
+   * correct/incorrect answer count, trigger display of next card 
+   * and trigger display of quiz results at the end of Quiz.
+   */
+  recordAnswer = knewAnswer => {
+    // Update answer count.
+    let {
+      correctAnswerCount,
+      incorrectAnswerCount,
+      showResults,
       currentQuestionIndex
     } = this.state;
 
-    return (
+    // Update the count.
+    if (knewAnswer) {
+      correctAnswerCount++;
+    } else {
+      incorrectAnswerCount++;
+    }
+
+    // Determine whether to show another card or quiz results.
+    const deck = this._getDeck();
+    if (currentQuestionIndex === deck.cards.length - 1) {
+      // time to show results.
+      showResults = true;
+    } else {
+      // show next card.
+      currentQuestionIndex++;
+    }
+
+    // Update state with new values.
+    this.setState(state => ({
+      correctAnswerCount,
+      incorrectAnswerCount,
+      showResults,
+      currentQuestionIndex
+    }));
+  };
+
+  render() {
+    const {
+      correctAnswerCount,
+      incorrectAnswerCount,
+      currentQuestionIndex,
+      showResults
+    } = this.state;
+
+    return !showResults ? (
       <View style={styles.container}>
         <QuizCard card={this._getDeck().cards[currentQuestionIndex]} />
         <Text style={styles.count}>{this._getRemainingCountMessage()}</Text>
-        <QuizActions />
+        <QuizActions recordAnswer={this.recordAnswer} />
       </View>
+    ) : (
+      <QuizResults
+        correctAnswerCount={correctAnswerCount}
+        incorrectAnswerCount={incorrectAnswerCount}
+        restartQuiz={this.restartQuiz}
+        navigation={this.props.navigation}
+      />
     );
   }
 }
