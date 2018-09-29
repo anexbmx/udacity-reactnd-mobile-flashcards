@@ -6,6 +6,7 @@ This is the third project from the Udacity React Nanodegree and focuses on build
 | [App Experience](#app-experience) | 
 | [Getting Started](#getting-started) |
 | [Tech Stack](#tech-stack) |
+| [Platforms](#platforms) |
 
 ## App Experience
 The application allows a user to create a deck of flash cards, each capturing a question and answer for the deck's topic. The user can then start a quiz to test their knowledge of a particular topic. Here's a quick preview of the app in action:
@@ -43,3 +44,10 @@ random_id_string: {
 ```
 
 This application could certainly be enhanced (such as enabling deletion support for decks and cards), but as of right now it delivers on the requirements for the Udacity React Nanodegree.
+
+## Platforms
+
+| Platform | Tested | Notes | 
+|:---------|:-------|:------|
+| iOS | :white_check_mark: | | 
+| Android | :x: | @irishbryan currently experience android simulator problems | 
