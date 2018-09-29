@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import pluralize from "pluralize";
 import { white, gray } from "../utils/colors";
+import { clearLocalNotification, setLocalNotification } from "../utils/helpers";
 
 import QuizCard from "./QuizCard";
 import QuizActions from "./QuizActions";
@@ -66,6 +67,11 @@ class Quiz extends Component {
     if (currentQuestionIndex === deck.cards.length - 1) {
       // time to show results.
       showResults = true;
+
+      // User completed a quiz, disable today's notification.
+      clearLocalNotification();
+      // Set tomorrow's notification.
+      setLocalNotification();
     } else {
       // show next card.
       currentQuestionIndex++;

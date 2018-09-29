@@ -9,6 +9,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { Constants } from "expo";
 import { white, purple, gray } from "./src/utils/colors";
+import { setLocalNotification } from "./src/utils/helpers";
 
 import reducer from "./src/reducers";
 import Decks from "./src/components/Decks";
@@ -75,7 +76,7 @@ const MainNavigator = createStackNavigator(
     Home: Tabs,
     DeckDetail: DeckDetail,
     AddCard: AddCard,
-    Quiz: Quiz  
+    Quiz: Quiz
   },
   {
     initialRouteName: "Home",
@@ -88,6 +89,10 @@ const MainNavigator = createStackNavigator(
 );
 
 class App extends Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer)}>
